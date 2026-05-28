@@ -7,7 +7,7 @@ import Footer from '../sections/Footer';
 // STEP 1: Create a Google Sheet
 // STEP 2: Deploy the Google Apps Script (Code.gs in google-apps-script folder)
 // STEP 3: Paste the Web App URL below:
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-z0NWqJKufU8zgtKDBHEly2ThItzRj-E1uMxBZH99NP6NRUZBqu2LRSr_3o4MbXzSKw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDEW3YmkRTh_rbiObmdTqEHPZinb5RXtw503DfklqGY5tISwqYH-jo_c0bNuMKGazQvQ/exec';
 
 const hearAboutOptions = [
   { key: 'flyer', label: '宣傳單張' },

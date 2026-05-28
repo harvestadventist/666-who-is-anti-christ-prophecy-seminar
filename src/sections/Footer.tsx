@@ -87,7 +87,7 @@ export default function Footer() {
               社交媒體
             </p>
             <a
-              href="https://www.facebook.com/people/Keys-To-Revelation/61567742378150"
+              href="https://www.facebook.com/harvestadventistcentre/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 transition-colors hover:text-[#f5f5f0]"
@@ -112,18 +112,6 @@ export default function Footer() {
             borderTop: '1px solid rgba(255,255,255,0.06)',
           }}
         >
-          <a
-            href="#"
-            className="flex items-center gap-1 transition-colors hover:text-[#f5f5f0]"
-            style={{
-              fontFamily: '"Noto Sans TC", sans-serif',
-              fontSize: 12,
-              color: '#8a8a82',
-            }}
-          >
-            使用條款
-            <ArrowUpRight size={10} />
-          </a>
           <p
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
@@ -131,7 +119,7 @@ export default function Footer() {
               color: 'rgba(138,138,130,0.5)',
             }}
           >
-            版權所有 &copy; 2026。保留一切權利。
+            豐盛復臨中心版權所有 &copy; 2026。保留一切權利。
           </p>
         </div>
       </div>

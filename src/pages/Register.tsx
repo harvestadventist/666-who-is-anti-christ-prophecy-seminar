@@ -4,27 +4,30 @@ import { ArrowLeft, ArrowUpRight, ChevronDown } from 'lucide-react';
 import Navbar from '../sections/Navbar';
 import Footer from '../sections/Footer';
 
+// STEP 1: Create a Google Sheet
+// STEP 2: Deploy the Google Apps Script (Code.gs in google-apps-script folder)
+// STEP 3: Paste the Web App URL below:
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-z0NWqJKufU8zgtKDBHEly2ThItzRj-E1uMxBZH99NP6NRUZBqu2LRSr_3o4MbXzSKw/exec';
+
 const hearAboutOptions = [
-  { key: 'mail_flyer', label: '郵寄卡片或傳單' },
-  { key: 'not_mail_flyer', label: '非郵寄卡片或傳單' },
+  { key: 'flyer', label: '宣傳單張' },
   { key: 'social_media', label: '社交媒體' },
   { key: 'friend', label: '朋友' },
   { key: 'church', label: '教會' },
-  { key: 'yard_sign', label: '庭院標誌或橫幅' },
-  { key: 'billboard', label: '廣告牌' },
-  { key: 'tv_radio', label: '電視/電台' },
+  { key: 'online_ads', label: '網上宣傳廣告' },
   { key: 'other', label: '其他' },
 ];
 
-const childrenOptions = ['0', '1', '2', '3', '4', '5+'];
+const guestOptions = ['0', '1', '2', '3', '4', '5+'];
 
 interface FormData {
   firstName: string;
   lastName: string;
   email: string;
   phone: string;
-  children: string;
+  guests: string;
   hearAbout: string[];
+  otherSource: string;
 }
 
 interface FormErrors {
@@ -37,15 +40,20 @@ interface FormErrors {
 export default function Register() {
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [errors, setErrors] = useState<FormErrors>({});
   const [form, setForm] = useState<FormData>({
     firstName: '',
     lastName: '',
     email: '',
     phone: '',
-    children: '0',
+    guests: '0',
     hearAbout: [],
+    otherSource: '',
   });
+
+  const isOtherSelected = form.hearAbout.includes('other');
 
   const toggleHearAbout = useCallback((key: string) => {
     setForm(prev => {
@@ -66,11 +74,30 @@ export default function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!validate()) return;
+
+    setSubmitting(true);
+    setSubmitError('');
+
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const result = await response.json();
+      if (result.status === 'success') {
+        setSubmitted(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        setSubmitError('提交失敗，請稍後再試。');
+      }
+    } catch (err) {
+      setSubmitError('網絡連接失敗，請稍後再試。');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -98,7 +125,7 @@ export default function Register() {
 
   if (submitted) {
     return (
-      <>
+      <div>
         <Navbar />
         <div
           className="min-h-screen flex items-center justify-center"
@@ -168,17 +195,14 @@ export default function Register() {
           </div>
         </div>
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div>
       <Navbar />
-      <div
-        className="min-h-screen"
-        style={{ background: '#0a0a0a', paddingTop: 72 }}
-      >
+      <div className="min-h-screen" style={{ background: '#0a0a0a', paddingTop: 72 }}>
         <div className="content-container py-10 lg:py-16">
           <div
             className="flex flex-col lg:flex-row overflow-hidden"
@@ -229,9 +253,8 @@ export default function Register() {
                 <span style={{ color: '#f59e0b' }}>免費禮物！</span>
               </h1>
 
-              {/* Book image */}
               <img
-                src="/images/book-gift.jpg"
+                src="/images/book-gift.png"
                 alt="免費禮物"
                 className="mt-8 rounded-lg hidden lg:block"
                 style={{
@@ -340,46 +363,22 @@ export default function Register() {
                   <label style={labelStyle}>
                     電話號碼<span style={{ color: '#f59e0b' }}>*</span>
                   </label>
-                  <div className="flex">
-                    <div
-                      className="flex items-center gap-1 shrink-0"
-                      style={{
-                        background: 'rgba(255,255,255,0.05)',
-                        border: `1px solid ${errors.phone ? 'rgba(239,68,68,0.6)' : 'rgba(255,255,255,0.12)'}`,
-                        borderRight: 'none',
-                        borderRadius: '8px 0 0 8px',
-                        padding: '0 12px',
-                        color: '#8a8a82',
-                        fontSize: 14,
-                        fontFamily: '"Noto Sans TC", sans-serif',
-                      }}
-                    >
-                      🇺🇸 +1
-                    </div>
-                    <input
-                      type="tel"
-                      placeholder="請輸入電話號碼"
-                      value={form.phone}
-                      onChange={e => setForm(prev => ({ ...prev, phone: e.target.value }))}
-                      className="flex-1"
-                      style={{
-                        ...inputStyle(!!errors.phone),
-                        borderRadius: '0 8px 8px 0',
-                      }}
-                      onFocus={e => { if (!errors.phone) e.target.style.borderColor = 'rgba(245,158,11,0.5)'; }}
-                      onBlur={e => { if (!errors.phone) e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
-                    />
-                  </div>
+                  <input
+                    type="tel"
+                    placeholder="請輸入電話號碼"
+                    value={form.phone}
+                    onChange={e => setForm(prev => ({ ...prev, phone: e.target.value }))}
+                    style={inputStyle(!!errors.phone)}
+                    onFocus={e => { if (!errors.phone) e.target.style.borderColor = 'rgba(245,158,11,0.5)'; }}
+                    onBlur={e => { if (!errors.phone) e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+                  />
                   {errors.phone && (
                     <p className="mt-1" style={{ fontSize: 12, color: '#ef4444' }}>{errors.phone}</p>
                   )}
                 </div>
 
                 {/* Divider */}
-                <div
-                  className="mb-8"
-                  style={{ height: 1, background: 'rgba(255,255,255,0.08)' }}
-                />
+                <div className="mb-8" style={{ height: 1, background: 'rgba(255,255,255,0.08)' }} />
 
                 {/* Step 2 */}
                 <div className="flex items-center gap-3 mb-2">
@@ -418,26 +417,26 @@ export default function Register() {
                   請提供這些額外的詳細資訊。
                 </p>
 
-                {/* Children */}
+                {/* Guests dropdown */}
                 <div className="mb-6">
-                  <label style={labelStyle}>
-                    將有多少位兒童參加？（12歲及以下）
-                  </label>
+                  <label style={labelStyle}>您會帶其他朋友或家人參加？</label>
                   <div className="relative">
                     <select
-                      value={form.children}
-                      onChange={e => setForm(prev => ({ ...prev, children: e.target.value }))}
+                      value={form.guests}
+                      onChange={e => setForm(prev => ({ ...prev, guests: e.target.value }))}
                       style={{
                         ...inputStyle(false),
                         appearance: 'none',
                         paddingRight: 40,
                         cursor: 'pointer',
+                        color: '#f5f5f0',
+                        backgroundColor: '#1a1a1a',
                       }}
                       onFocus={e => { e.target.style.borderColor = 'rgba(245,158,11,0.5)'; }}
                       onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
                     >
-                      {childrenOptions.map(opt => (
-                        <option key={opt} value={opt}>{opt}</option>
+                      {guestOptions.map(opt => (
+                        <option key={opt} value={opt} style={{ backgroundColor: '#1a1a1a', color: '#f5f5f0' }}>{opt}</option>
                       ))}
                     </select>
                     <ChevronDown
@@ -456,41 +455,53 @@ export default function Register() {
                   </label>
                   <div className="flex flex-col gap-3">
                     {hearAboutOptions.map(opt => (
-                      <label
-                        key={opt.key}
-                        className="flex items-center gap-3 cursor-pointer"
-                      >
-                        <div
-                          className="flex items-center justify-center shrink-0 transition-all"
-                          style={{
-                            width: 20,
-                            height: 20,
-                            borderRadius: 4,
-                            border: form.hearAbout.includes(opt.key)
-                              ? '2px solid #f59e0b'
-                              : '2px solid rgba(255,255,255,0.25)',
-                            background: form.hearAbout.includes(opt.key)
-                              ? '#f59e0b'
-                              : 'transparent',
-                          }}
-                          onClick={() => toggleHearAbout(opt.key)}
-                        >
-                          {form.hearAbout.includes(opt.key) && (
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="20 6 9 17 4 12" />
-                            </svg>
-                          )}
-                        </div>
-                        <span
-                          style={{
-                            fontFamily: '"Noto Sans TC", sans-serif',
-                            fontSize: 15,
-                            color: '#f5f5f0',
-                          }}
-                        >
-                          {opt.label}
-                        </span>
-                      </label>
+                      <div key={opt.key}>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <div
+                            className="flex items-center justify-center shrink-0 transition-all"
+                            style={{
+                              width: 20,
+                              height: 20,
+                              borderRadius: 4,
+                              border: form.hearAbout.includes(opt.key)
+                                ? '2px solid #f59e0b'
+                                : '2px solid rgba(255,255,255,0.25)',
+                              background: form.hearAbout.includes(opt.key)
+                                ? '#f59e0b'
+                                : 'transparent',
+                            }}
+                            onClick={() => toggleHearAbout(opt.key)}
+                          >
+                            {form.hearAbout.includes(opt.key) && (
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            )}
+                          </div>
+                          <span
+                            style={{
+                              fontFamily: '"Noto Sans TC", sans-serif',
+                              fontSize: 15,
+                              color: '#f5f5f0',
+                            }}
+                          >
+                            {opt.label}
+                          </span>
+                        </label>
+                        {opt.key === 'other' && isOtherSelected && (
+                          <div className="mt-2 ml-8">
+                            <input
+                              type="text"
+                              placeholder="請說明..."
+                              value={form.otherSource}
+                              onChange={e => setForm(prev => ({ ...prev, otherSource: e.target.value }))}
+                              style={inputStyle(false)}
+                              onFocus={e => { e.target.style.borderColor = 'rgba(245,158,11,0.5)'; }}
+                              onBlur={e => { e.target.style.borderColor = 'rgba(255,255,255,0.12)'; }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                   {errors.hearAbout && (
@@ -498,9 +509,15 @@ export default function Register() {
                   )}
                 </div>
 
+                {/* Error message */}
+                {submitError && (
+                  <p className="mb-4" style={{ fontSize: 14, color: '#ef4444' }}>{submitError}</p>
+                )}
+
                 {/* Submit */}
                 <button
                   type="submit"
+                  disabled={submitting}
                   className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110"
                   style={{
                     background: '#f59e0b',
@@ -509,33 +526,19 @@ export default function Register() {
                     fontSize: 15,
                     fontFamily: '"Noto Sans TC", sans-serif',
                     border: 'none',
-                    cursor: 'pointer',
+                    cursor: submitting ? 'wait' : 'pointer',
+                    opacity: submitting ? 0.7 : 1,
                   }}
                 >
-                  預留您的座位
+                  {submitting ? '提交中...' : '預留您的座位'}
                   <ArrowUpRight size={16} />
                 </button>
-
-                <p
-                  className="mt-4"
-                  style={{
-                    fontFamily: '"Noto Sans TC", sans-serif',
-                    fontSize: 13,
-                    color: '#8a8a82',
-                  }}
-                >
-                  點擊「預留您的座位」，即表示您同意我們的
-                  <a href="#" className="underline hover:text-[#f5f5f0] transition-colors" style={{ color: '#f59e0b' }}>
-                    活動條款與細則
-                  </a>
-                  。
-                </p>
               </form>
             </div>
           </div>
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 }

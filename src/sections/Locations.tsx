@@ -25,7 +25,7 @@ const locations: LocationBlock[] = [
     showDate: false,
     date: '',
     showAddress: true,
-    address: '旺角彌敦道612至618號好望角大廈9樓百本人才培訓學院',
+    address: '旺角彌敦道612至618號好望角大廈9樓百本人才培訓學院 (旺角地鐵站E2出口 - 2分鐘步行)',
     showTime: false,
     time: '',
     showButton: true,
@@ -165,11 +165,11 @@ export default function Locations() {
       </div>
 
       <div
-        className="content-container relative flex flex-col lg:flex-row gap-8"
+        className="content-container relative flex flex-col lg:flex-row lg:items-stretch gap-8"
         style={{ zIndex: 1 }}
       >
         {/* Left Panel */}
-        <div ref={leftRef} className="w-full lg:w-[35%]">
+        <div ref={leftRef} className="w-full lg:w-[35%] flex flex-col">
           <h2
             style={{
               fontFamily: '"Noto Sans TC", "PingFang TC", sans-serif',
@@ -298,27 +298,42 @@ export default function Locations() {
         </div>
 
         {/* Right Panel - Map with red marker */}
-        <div ref={rightRef} className="w-full lg:w-[65%]">
+        <div ref={rightRef} className="w-full lg:w-[65%] lg:self-stretch">
           <div
-            className="w-full h-full rounded-2xl overflow-hidden"
+            className="w-full h-full rounded-2xl overflow-hidden flex flex-col"
             style={{
               background: '#141414',
               border: '1px solid rgba(255,255,255,0.08)',
-              minHeight: 500,
             }}
           >
             <iframe
               title="聚會地點地圖"
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.0781!2d114.1694!3d22.3173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x340400c7b5e0c65f%3A0x2e68ef8c6537b33f!2z5YWs6Jek6YGT5bqc6Jm55aSn5YWr5a6J5aSn6IKy5Y6f5qGf6JGj5qGf6KGT!5e0!3m2!1szh-TW!2shk!4v1700000000000!5m2!1szh-TW!2shk&q=%E6%97%BA%E8%A7%92%E5%BD%8C%E6%95%A6%E9%81%93612%E8%87%B3618%E8%99%9F%E5%A5%BD%E6%9C%9B%E8%A7%92%E5%A4%A7%E5%BB%88"
-              className="w-full h-full"
+              src="https://maps.google.com/maps?q=%E6%97%BA%E8%A7%92%E5%BD%8C%E6%95%A6%E9%81%93612%E8%87%B3618%E8%99%9F%E5%A5%BD%E6%9C%9B%E8%A7%92%E5%A4%A7%E5%BB%88&t=m&z=17&ie=UTF8&iwloc=B&output=embed"
+              className="w-full flex-1"
               style={{
-                minHeight: 500,
+                minHeight: 300,
                 border: 0,
               }}
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
             />
+            <a
+              href="https://www.google.com/maps/dir/?api=1&origin=%E7%B5%95%E5%91%B3%20Juewei%20HK%20%E4%B9%9D%E9%BE%8D%20%E6%97%BA%E8%A7%92%20%E6%97%BA%E8%A7%92%E6%B8%AF%E9%90%B5%E6%97%BA%E8%A7%92%E7%AB%99MOK25%E8%99%96&destination=%E6%97%BA%E8%A7%92%E5%BD%8C%E6%95%A6%E9%81%93612%E8%87%B3618%E8%99%9F%E5%A5%BD%E6%9C%9B%E8%A7%92%E5%A4%A7%E5%BB%88&travelmode=walking"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-2 py-3 transition-colors hover:bg-white/5 shrink-0"
+              style={{
+                fontFamily: '"Noto Sans TC", sans-serif',
+                fontSize: 14,
+                fontWeight: 600,
+                color: '#f59e0b',
+                borderTop: '1px solid rgba(255,255,255,0.08)',
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+              查看步行路線（旺角地鐵站 → 好望角大廈）
+            </a>
           </div>
         </div>
       </div>

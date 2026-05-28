@@ -49,7 +49,7 @@ export default function FreeGift() {
       >
         {/* Book Image */}
         <img
-          src="/images/book-gift.jpg"
+          src="/images/book-gift.png"
           alt="Kingdoms In Time 免費書籍"
           className="shrink-0 rounded-lg"
           style={{ width: 80, height: 120, objectFit: 'cover' }}

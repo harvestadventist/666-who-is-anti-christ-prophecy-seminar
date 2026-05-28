@@ -1,9 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <nav
@@ -13,13 +25,14 @@ export default function Navbar() {
         left: 0,
         right: 0,
         height: 72,
-        background: 'rgba(10,10,10,0.85)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid rgba(255,255,255,0.08)',
+        background: scrolled
+          ? 'rgba(10,10,10,0.6)'
+          : 'linear-gradient(to bottom, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.4) 60%, rgba(10,10,10,0) 100%)',
+        borderBottom: 'none',
         zIndex: 1000,
         display: 'flex',
         alignItems: 'center',
+        transition: 'background 0.4s ease',
       }}
     >
       <div className="content-container flex items-center justify-between w-full">
@@ -50,17 +63,17 @@ export default function Navbar() {
               誰是敵基督
             </div>
           </div>
-          <span className="hidden sm:inline text-[#8a8a82] text-xs">|</span>
+          <span className="hidden sm:inline" style={{ color: '#f5f5f0', fontSize: 13, fontWeight: 700 }}>|</span>
           <span
             className="hidden sm:inline"
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
-              fontWeight: 400,
+              fontWeight: 700,
               fontSize: 13,
-              color: '#8a8a82',
+              color: '#f5f5f0',
             }}
           >
-            聖經預言研討會
+            聖經預言講座
           </span>
         </Link>
 
@@ -72,13 +85,23 @@ export default function Navbar() {
             style={{
               background: '#f59e0b',
               color: '#0a0a0a',
-              padding: '10px 24px',
+              padding: '10px 10px 10px 24px',
               fontSize: 14,
               fontFamily: '"Noto Sans TC", sans-serif',
             }}
           >
             立即報名
-            <ArrowUpRight size={14} />
+            <span
+              className="flex items-center justify-center rounded-full"
+              style={{
+                width: 28,
+                height: 28,
+                background: '#0a0a0a',
+                marginLeft: 4,
+              }}
+            >
+              <ArrowUpRight size={14} color="#f5f5f0" />
+            </span>
           </Link>
 
           {/* Mobile hamburger */}

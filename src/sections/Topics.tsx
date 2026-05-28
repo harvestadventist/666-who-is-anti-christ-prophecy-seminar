@@ -1,54 +1,70 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const topics = [
+interface TopicItem {
+  image: string;
+  title: string;
+  description: string;
+}
+
+const topics: TopicItem[] = [
   {
-    image: '/images/topic-temple.jpg',
-    title: '啟示錄的聖殿',
-    description:
-      '在啟示錄幾乎每一章中，您都會遇到對聖殿或其器具的引用——每個象徵都充滿意義和奧秘。深入理解聖殿及其禮儀對於解開啟示錄的真正信息至關重要。在這次探索中，我們將揭示聖殿如何成為一個具有深遠意義的強大象徵，這些古老的聖禮如何掌握理解末世預言的鑰匙——以及為什麼它們現在比以往任何時候都更重要。',
+    image: '/images/topic-christ.jpg',
+    title: '誰是基督？',
+    description: '歷代以來世人一直所期待的救主應許要拯救相信祂的人。',
   },
   {
-    image: '/images/topic-keys.jpg',
-    title: '啟示錄的鑰匙',
-    description:
-      '許多人認為聖經預言，特別是啟示錄，是一個難解的謎——某種無法理解的事物。但如果這個謎團可以被解開呢？在這次演講中，您將發現隱藏的鑰匙，這些鑰匙不僅會照亮聖經的深層含義，還將使您能夠以從未想過的方式掌握聖經預言。準備好以全新的眼光看待啟示錄及其預言信息。',
+    image: '/images/topic-antichrist.jpg',
+    title: '誰是敵基督？',
+    description: '撒旦在末日要透過他的爪牙進行欺騙的工作並施行大逼迫。',
   },
   {
-    image: '/images/topic-countdown.jpg',
-    title: '啟示錄的最終倒數',
-    description:
-      '當我們環顧這個動盪的世界時，一個令人不安的問題揮之不去：這種情況還能持續多久？我們會陷入自我毀滅的漩渦，還是一場災難性事件——隕石撞擊、自然災害——是我們不可避免的命運？在這次探索中，我們將揭示隱藏在神的話語中的深刻真理，這些真理不僅提供答案，還讓我們更深入地理解我們的未來和塑造它的力量。',
+    image: '/images/topic-666.jpg',
+    title: '聖經的666是什麼？',
+    description: '凡有智慧的人才能明白這數目背後的真正意義。',
   },
   {
-    image: '/images/topic-superpower.jpg',
-    title: '啟示錄的下一個世界超級大國',
-    description:
-      '當我們想像下一個世界超級大國時，許多人都在猜測：會是俄羅斯、中國，還是另一個崛起的力量？在這次演講中，我們將深入探討一個驚人的聖經預言，這個預言不僅直接談到未來世界霸權的問題，還揭示了我們所知的世界末日。準備好發現這個非凡的預言，它揭示了塑造我們全球未來的真正力量——遠超我們今天所能看見的力量。',
+    image: '/images/topic-144000.jpg',
+    title: '誰是144,000人？',
+    description: '末日必有一群完全忠心耶穌的人，在黑暗的日子中彰顯祂的品格。',
   },
   {
-    image: '/images/topic-throne.jpg',
-    title: '啟示錄的寶座之戰',
-    description:
-      '每一天，新聞頭條都充滿了悲劇、痛苦和失落的故事。隨著世界變得越來越混亂，許多人都在困惑中掙扎，尋找可以責備的人或事。在這次演講中，您將發現聖經掌握著理解我們苦難的真正根源及其深刻原因的鑰匙。準備好解開這個謎團，在曾經只有混亂的地方找到清晰。',
+    image: '/images/topic-good-evil.jpg',
+    title: '善惡之爭誰會得勝？',
+    description: '我們知道善與惡之間的鬥爭會越演越烈，問題是我們會站在哪邊？',
   },
 ];
+
+const CARD_GAP = 24;
+
+// Build infinite carousel: [last2, last1, ...all..., first0, first1, first2]
+const extendedTopics = [
+  ...topics.slice(-2), // card3, card4
+  ...topics,           // card0, card1, card2, card3, card4
+  ...topics.slice(0, 3), // card0, card1, card2
+];
+
+// Real start index (where card0 is at leftmost visible position)
+const START_INDEX = 2;
 
 export default function Topics() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const cardsContainerRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [slideIndex, setSlideIndex] = useState(START_INDEX);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const isResetting = useRef(false);
+
+  const maxRealIndex = START_INDEX + topics.length - 1; // 2 + 5 - 1 = 6
 
   useEffect(() => {
     const section = sectionRef.current;
     const title = titleRef.current;
-    const cardsContainer = cardsContainerRef.current;
-    if (!section || !title || !cardsContainer) return;
+    if (!section || !title) return;
 
     gsap.fromTo(
       title,
@@ -66,7 +82,7 @@ export default function Topics() {
       }
     );
 
-    const cards = cardsContainer.querySelectorAll('.topic-card');
+    const cards = section.querySelectorAll('.topic-card');
     gsap.fromTo(
       cards,
       { y: 50, opacity: 0 },
@@ -91,13 +107,66 @@ export default function Topics() {
     };
   }, []);
 
-  const scrollToCard = (index: number) => {
-    const container = cardsContainerRef.current;
-    if (!container) return;
-    const newIndex = Math.max(0, Math.min(index, topics.length - 1));
-    setActiveIndex(newIndex);
-    const cardWidth = 380 + 24;
-    container.scrollTo({ left: newIndex * cardWidth, behavior: 'smooth' });
+  // Get real card index (0-4) for dot indicators
+  const getRealIndex = useCallback((si: number) => {
+    if (si >= START_INDEX && si <= maxRealIndex) {
+      return si - START_INDEX;
+    }
+    if (si < START_INDEX) {
+      return topics.length - (START_INDEX - si);
+    }
+    return si - maxRealIndex - 1;
+  }, [maxRealIndex]);
+
+  const currentRealIndex = getRealIndex(slideIndex);
+
+  const goTo = useCallback((targetIndex: number) => {
+    if (isResetting.current) return;
+    setIsTransitioning(true);
+    setSlideIndex(targetIndex);
+  }, []);
+
+  const goPrev = useCallback(() => {
+    if (isResetting.current) return;
+    setIsTransitioning(true);
+    setSlideIndex(prev => prev - 1);
+  }, []);
+
+  const goNext = useCallback(() => {
+    if (isResetting.current) return;
+    setIsTransitioning(true);
+    setSlideIndex(prev => prev + 1);
+  }, []);
+
+  // Handle infinite loop reset
+  const handleTransitionEnd = useCallback(() => {
+    if (slideIndex > maxRealIndex) {
+      // We're in clone zone at end, jump to start
+      isResetting.current = true;
+      setIsTransitioning(false);
+      const offset = slideIndex - maxRealIndex;
+      setSlideIndex(START_INDEX - 1 + offset);
+      setTimeout(() => {
+        isResetting.current = false;
+      }, 50);
+    } else if (slideIndex < START_INDEX) {
+      // We're in clone zone at start, jump to end
+      isResetting.current = true;
+      setIsTransitioning(false);
+      const offset = START_INDEX - slideIndex;
+      setSlideIndex(maxRealIndex + 1 - offset);
+      setTimeout(() => {
+        isResetting.current = false;
+      }, 50);
+    }
+  }, [slideIndex, maxRealIndex]);
+
+  const trackStyle: React.CSSProperties = {
+    display: 'flex',
+    gap: CARD_GAP,
+    transform: `translateX(calc(-${slideIndex} * (100% + ${CARD_GAP}px) / 3))`,
+    transition: isTransitioning ? 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+    willChange: 'transform',
   };
 
   return (
@@ -109,6 +178,7 @@ export default function Topics() {
         position: 'relative',
         zIndex: 1,
         padding: '100px 0',
+        overflow: 'hidden',
       }}
     >
       <div className="content-container">
@@ -125,97 +195,100 @@ export default function Topics() {
             textWrap: 'balance',
           }}
         >
-          研討主題還有更多！
+          預言講座研討主題簡介
         </h2>
       </div>
 
-      {/* Carousel */}
-      <div className="relative mt-12" style={{ maxWidth: '100%' }}>
-        {/* Navigation arrows */}
+      {/* Desktop Carousel */}
+      <div className="relative mt-12 hidden md:block">
+        {/* Left Arrow */}
         <button
-          onClick={() => scrollToCard(activeIndex - 1)}
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full transition-all hover:brightness-125 hidden md:flex"
+          onClick={goPrev}
+          className="absolute left-4 top-[150px] z-10 flex items-center justify-center rounded-full transition-all hover:bg-white/20"
           style={{
             width: 44,
             height: 44,
-            background: 'rgba(255,255,255,0.08)',
+            background: 'rgba(255,255,255,0.12)',
+            cursor: 'pointer',
           }}
         >
           <ChevronLeft size={20} color="#f5f5f0" />
         </button>
+
+        {/* Right Arrow */}
         <button
-          onClick={() => scrollToCard(activeIndex + 1)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center rounded-full transition-all hover:brightness-125 hidden md:flex"
+          onClick={goNext}
+          className="absolute right-4 top-[150px] z-10 flex items-center justify-center rounded-full transition-all hover:bg-white/20"
           style={{
             width: 44,
             height: 44,
-            background: 'rgba(255,255,255,0.08)',
+            background: 'rgba(255,255,255,0.12)',
+            cursor: 'pointer',
           }}
         >
           <ChevronRight size={20} color="#f5f5f0" />
         </button>
 
+        {/* Viewport */}
         <div
-          ref={cardsContainerRef}
-          className="flex gap-6 overflow-x-auto pb-4 px-4 lg:px-16 scrollbar-hide"
           style={{
-            scrollSnapType: 'x mandatory',
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
+            margin: '0 clamp(60px, 8vw, 80px)',
+            overflow: 'hidden',
           }}
         >
-          {topics.map((topic, i) => (
-            <div
-              key={i}
-              className="topic-card shrink-0"
-              style={{
-                width: 'clamp(300px, 80vw, 380px)',
-                background: '#1a1a1a',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 16,
-                overflow: 'hidden',
-                scrollSnapAlign: 'start',
-              }}
-            >
-              <div style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
-                <img
-                  src={topic.image}
-                  alt={topic.title}
-                  className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-                  loading="lazy"
-                />
+          <div
+            ref={trackRef}
+            onTransitionEnd={handleTransitionEnd}
+            style={trackStyle}
+          >
+            {extendedTopics.map((topic, i) => (
+              <div
+                key={i}
+                className="topic-card shrink-0"
+                style={{
+                  width: `calc((100% - ${CARD_GAP * 2}px) / 3)`,
+                  background: '#1a1a1a',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                }}
+              >
+                <div style={{ aspectRatio: '16/10', overflow: 'hidden' }}>
+                  <img
+                    src={topic.image}
+                    alt={topic.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div style={{ padding: 24 }}>
+                  <h3
+                    style={{
+                      fontFamily: '"Noto Sans TC", sans-serif',
+                      fontWeight: 700,
+                      fontSize: 18,
+                      color: '#f5f5f0',
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {topic.title}
+                  </h3>
+                  <p
+                    className="mt-2"
+                    style={{
+                      fontFamily: '"Noto Sans TC", sans-serif',
+                      fontWeight: 400,
+                      fontSize: 14,
+                      color: '#8a8a82',
+                      lineHeight: 1.7,
+                    }}
+                  >
+                    {topic.description}
+                  </p>
+                </div>
               </div>
-              <div style={{ padding: 24 }}>
-                <h3
-                  style={{
-                    fontFamily: '"Noto Sans TC", sans-serif',
-                    fontWeight: 700,
-                    fontSize: 18,
-                    color: '#f5f5f0',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {topic.title}
-                </h3>
-                <p
-                  className="mt-2"
-                  style={{
-                    fontFamily: '"Noto Sans TC", sans-serif',
-                    fontWeight: 400,
-                    fontSize: 14,
-                    color: '#8a8a82',
-                    lineHeight: 1.7,
-                    display: '-webkit-box',
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
-                  }}
-                >
-                  {topic.description}
-                </p>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Dots */}
@@ -223,17 +296,194 @@ export default function Topics() {
           {topics.map((_, i) => (
             <button
               key={i}
-              onClick={() => scrollToCard(i)}
+              onClick={() => goTo(START_INDEX + i)}
               className="rounded-full transition-all"
               style={{
                 width: 8,
                 height: 8,
-                background: i === activeIndex ? '#f5f5f0' : 'rgba(255,255,255,0.25)',
+                background: i === currentRealIndex ? '#f5f5f0' : 'rgba(255,255,255,0.25)',
               }}
             />
           ))}
         </div>
       </div>
+
+      {/* Mobile Coverflow Carousel */}
+      <div className="mt-12 md:hidden">
+        <MobileCoverflow topics={topics} />
+      </div>
     </section>
+  );
+}
+
+/* Mobile Coverflow Component */
+function MobileCoverflow({ topics }: { topics: TopicItem[] }) {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [isTrans, setIsTrans] = useState(true);
+  const isResetting = useRef(false);
+
+  const extTopics = [
+    ...topics.slice(-1),
+    ...topics,
+    ...topics.slice(0, 1),
+  ];
+  const START = 1;
+  const MAX = START + topics.length - 1;
+
+  const realIndex = activeIdx >= START && activeIdx <= MAX
+    ? activeIdx - START
+    : activeIdx < START
+      ? topics.length - 1
+      : 0;
+
+  const goTo = (idx: number) => {
+    if (isResetting.current) return;
+    setIsTrans(true);
+    setActiveIdx(idx);
+  };
+
+  const goPrev = () => {
+    if (isResetting.current) return;
+    setIsTrans(true);
+    setActiveIdx(p => p - 1);
+  };
+
+  const goNext = () => {
+    if (isResetting.current) return;
+    setIsTrans(true);
+    setActiveIdx(p => p + 1);
+  };
+
+  const handleTransEnd = () => {
+    if (activeIdx > MAX) {
+      isResetting.current = true;
+      setIsTrans(false);
+      setActiveIdx(START);
+      setTimeout(() => { isResetting.current = false; }, 50);
+    } else if (activeIdx < START) {
+      isResetting.current = true;
+      setIsTrans(false);
+      setActiveIdx(MAX);
+      setTimeout(() => { isResetting.current = false; }, 50);
+    }
+  };
+
+  return (
+    <div className="relative">
+      {/* Left Arrow */}
+      <button
+        onClick={goPrev}
+        className="absolute left-2 top-[80px] z-10 flex items-center justify-center rounded-full"
+        style={{
+          width: 36,
+          height: 36,
+          background: 'rgba(255,255,255,0.12)',
+          cursor: 'pointer',
+        }}
+      >
+        <ChevronLeft size={18} color="#f5f5f0" />
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={goNext}
+        className="absolute right-2 top-[80px] z-10 flex items-center justify-center rounded-full"
+        style={{
+          width: 36,
+          height: 36,
+          background: 'rgba(255,255,255,0.12)',
+          cursor: 'pointer',
+        }}
+      >
+        <ChevronRight size={18} color="#f5f5f0" />
+      </button>
+
+      {/* Viewport */}
+      <div
+        className="overflow-hidden"
+        style={{ margin: '0 44px' }}
+      >
+        <div
+          className="flex"
+          style={{
+            gap: 12,
+            transform: `translateX(calc(-${activeIdx} * (100% + 12px)))`,
+            transition: isTrans ? 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
+            willChange: 'transform',
+          }}
+          onTransitionEnd={handleTransEnd}
+        >
+          {extTopics.map((topic, i) => {
+            const dist = Math.abs(i - activeIdx);
+            return (
+              <div
+                key={i}
+                className="shrink-0"
+                style={{
+                  width: 'calc(100% - 0px)',
+                  transform: dist === 0 ? 'scale(1)' : 'scale(0.92)',
+                  opacity: dist === 0 ? 1 : 0.6,
+                  transition: 'transform 0.4s ease, opacity 0.4s ease',
+                  background: '#1a1a1a',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: 16,
+                  overflow: 'hidden',
+                }}
+              >
+                <div style={{ aspectRatio: '16/9', overflow: 'hidden' }}>
+                  <img
+                    src={topic.image}
+                    alt={topic.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div style={{ padding: 16 }}>
+                  <h3
+                    style={{
+                      fontFamily: '"Noto Sans TC", sans-serif',
+                      fontWeight: 700,
+                      fontSize: 15,
+                      color: '#f5f5f0',
+                      lineHeight: 1.3,
+                    }}
+                  >
+                    {topic.title}
+                  </h3>
+                  <p
+                    className="mt-1"
+                    style={{
+                      fontFamily: '"Noto Sans TC", sans-serif',
+                      fontWeight: 400,
+                      fontSize: 12,
+                      color: '#8a8a82',
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {topic.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dots */}
+      <div className="flex justify-center gap-2 mt-4">
+        {topics.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => goTo(START + i)}
+            className="rounded-full transition-all"
+            style={{
+              width: 8,
+              height: 8,
+              background: i === realIndex ? '#f5f5f0' : 'rgba(255,255,255,0.25)',
+            }}
+          />
+        ))}
+      </div>
+    </div>
   );
 }

@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronDown, MapPin } from 'lucide-react';
@@ -39,7 +38,7 @@ export default function Hero() {
       {/* Background Image */}
       <img
         src="/images/hero-banner.jpg"
-        alt="啟示錄的鑰匙 — 聖經預言研討會"
+        alt="啟示錄的鑰匙 — 聖經預言講座"
         style={{
           position: 'absolute',
           top: 0,
@@ -91,8 +90,8 @@ export default function Hero() {
           免費聖經預言講座！
         </h1>
 
-        <Link
-          to="/register"
+        <a
+          href="#locations"
           className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110"
           style={{
             background: '#f59e0b',
@@ -105,7 +104,7 @@ export default function Hero() {
         >
           <MapPin size={16} />
           聚會地點
-        </Link>
+        </a>
       </div>
 
       {/* Scroll Indicator */}

@@ -7,7 +7,7 @@ import Footer from '../sections/Footer';
 // STEP 1: Create a Google Sheet
 // STEP 2: Deploy the Google Apps Script (Code.gs in google-apps-script folder)
 // STEP 3: Paste the Web App URL below:
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwDEW3YmkRTh_rbiObmdTqEHPZinb5RXtw503DfklqGY5tISwqYH-jo_c0bNuMKGazQvQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8mppLgfRGt6bWG10y3WMpRfkWbn1iqtgRjAm7Yea76fGPLn8bH38eqJDESItxXVdpGw/exec';
 
 const hearAboutOptions = [
   { key: 'flyer', label: '宣傳單張' },
@@ -82,10 +82,19 @@ export default function Register() {
     setSubmitError('');
 
     try {
+      const hearAboutStr = form.hearAbout.join(', ');
+      const params = new URLSearchParams();
+      params.append('firstName', form.firstName);
+      params.append('lastName', form.lastName);
+      params.append('email', form.email);
+      params.append('phone', form.phone);
+      params.append('guests', form.guests);
+      params.append('hearAbout', hearAboutStr);
+      params.append('otherSource', form.otherSource);
+
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: params,
       });
       const result = await response.json();
       if (result.status === 'success') {

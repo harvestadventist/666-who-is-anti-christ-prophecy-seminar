@@ -44,7 +44,9 @@ export default function Home() {
       <Navbar />
       <main style={{ position: 'relative', zIndex: 1 }}>
         <Hero />
-        <SearchBar />
+        <div className="hidden sm:block">
+          <SearchBar />
+        </div>
         <About />
         <Topics />
         <div className="section-padding" style={{ background: '#0a0a0a' }}>

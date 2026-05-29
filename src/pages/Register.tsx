@@ -7,7 +7,7 @@ import Footer from '../sections/Footer';
 // STEP 1: Create a Google Sheet
 // STEP 2: Deploy the Google Apps Script (Code.gs in google-apps-script folder)
 // STEP 3: Paste the Web App URL below:
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw8mppLgfRGt6bWG10y3WMpRfkWbn1iqtgRjAm7Yea76fGPLn8bH38eqJDESItxXVdpGw/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-z0NWqJKufU8zgtKDBHEly2ThItzRj-E1uMxBZH99NP6NRUZBqu2LRSr_3o4MbXzSKw/exec';
 
 const hearAboutOptions = [
   { key: 'flyer', label: '宣傳單張' },
@@ -527,7 +527,7 @@ export default function Register() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110"
+                  className="flex items-center justify-center gap-2 rounded-full font-bold transition-all hover:brightness-110 w-full"
                   style={{
                     background: '#f59e0b',
                     color: '#0a0a0a',

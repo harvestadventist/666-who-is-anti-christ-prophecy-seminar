@@ -420,9 +420,9 @@ function MobileCoverflow({ topics }: { topics: TopicItem[] }) {
                 key={i}
                 className="shrink-0"
                 style={{
-                  width: 'calc(100% - 0px)',
-                  transform: dist === 0 ? 'scale(1)' : 'scale(0.92)',
-                  opacity: dist === 0 ? 1 : 0.6,
+                  width: '100%',
+                  transform: dist === 0 ? 'scale(1)' : 'scale(0.95)',
+                  opacity: dist === 0 ? 1 : 0.5,
                   transition: 'transform 0.4s ease, opacity 0.4s ease',
                   background: '#1a1a1a',
                   border: '1px solid rgba(255,255,255,0.08)',

@@ -31,7 +31,7 @@ const faqs = [
 export default function FAQ() {
   const sectionRef = useRef<HTMLElement>(null);
   const leftRef = useRef<HTMLDivElement>(null);
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -115,16 +115,33 @@ export default function FAQ() {
             如果您還有其他問題，請隨時與我們聯繫。
           </p>
           <a
-            href="#contact"
-            className="inline-block mt-3 transition-colors hover:underline"
+            href="https://wa.me/+44184158"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110 mt-4"
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
               fontSize: 14,
-              fontWeight: 600,
-              color: '#f59e0b',
+              color: '#f5f5f0',
+              padding: '10px 10px 10px 20px',
+              border: '1px solid rgba(255,255,255,0.2)',
             }}
           >
             聯絡我們
+            <span
+              className="flex items-center justify-center rounded-full"
+              style={{
+                width: 28,
+                height: 28,
+                background: '#f59e0b',
+                marginLeft: 4,
+              }}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
+            </span>
           </a>
         </div>
 

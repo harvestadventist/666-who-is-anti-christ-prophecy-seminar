@@ -63,9 +63,8 @@ export default function Navbar() {
               誰是敵基督
             </div>
           </div>
-          <span className="hidden sm:inline" style={{ color: '#f5f5f0', fontSize: 13, fontWeight: 700 }}>|</span>
+          <span style={{ color: '#f5f5f0', fontSize: 13, fontWeight: 700 }}>|</span>
           <span
-            className="hidden sm:inline"
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
               fontWeight: 700,

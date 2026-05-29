@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MapPin, Search, ArrowRight } from 'lucide-react';
+import { Search } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,52 +46,59 @@ export default function SearchBar() {
       }}
     >
       <div className="content-container flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div
-            className="flex items-center justify-center rounded-full shrink-0"
-            style={{ width: 40, height: 40, background: '#0a0a0a' }}
+        {/* Text - centered on mobile, left on desktop */}
+        <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
+          <p
+            className="sm:text-[18px]"
+            style={{
+              fontFamily: '"Noto Sans TC", sans-serif',
+              fontWeight: 700,
+              fontSize: 20,
+              color: '#0a0a0a',
+              lineHeight: 1.3,
+            }}
           >
-            <MapPin size={20} color="#f59e0b" />
-          </div>
-          <div>
-            <p
-              style={{
-                fontFamily: '"Noto Sans TC", sans-serif',
-                fontWeight: 700,
-                fontSize: 18,
-                color: '#0a0a0a',
-                lineHeight: 1.3,
-              }}
-            >
-              免費聖經預言講座舉辦地點
-            </p>
-            <p
-              style={{
-                fontFamily: '"Noto Sans TC", sans-serif',
-                fontSize: 14,
-                color: 'rgba(10,10,10,0.7)',
-                lineHeight: 1.4,
-              }}
-            >
-              歡迎親臨現場！
-            </p>
-          </div>
+            免費聖經預言講座舉辦地點
+          </p>
+          <p
+            className="sm:text-[14px]"
+            style={{
+              fontFamily: '"Noto Sans TC", sans-serif',
+              fontSize: 16,
+              color: 'rgba(10,10,10,0.7)',
+              lineHeight: 1.4,
+            }}
+          >
+            歡迎親臨現場！
+          </p>
         </div>
 
+        {/* Button - full width on mobile with 30px margins */}
         <a
           href="#locations"
-          className="inline-flex items-center gap-2 rounded-full font-bold whitespace-nowrap transition-all hover:brightness-110"
+          className="inline-flex items-center justify-center gap-2 rounded-full font-bold whitespace-nowrap transition-all hover:brightness-110 w-full sm:w-auto"
           style={{
-            background: '#0a0a0a',
-            color: '#f59e0b',
-            padding: '10px 24px',
-            fontSize: 14,
+            background: '#ffffff',
+            color: '#0a0a0a',
+            padding: '14px 10px 14px 24px',
+            fontSize: 15,
             fontFamily: '"Noto Sans TC", sans-serif',
+            marginLeft: 30,
+            marginRight: 30,
           }}
         >
-          <Search size={16} />
           搜尋聚會地點
-          <ArrowRight size={14} />
+          <span
+            className="flex items-center justify-center rounded-full shrink-0"
+            style={{
+              width: 36,
+              height: 36,
+              background: '#f59e0b',
+              marginLeft: 4,
+            }}
+          >
+            <Search size={18} color="#0a0a0a" />
+          </span>
         </a>
       </div>
     </div>

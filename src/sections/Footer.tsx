@@ -13,52 +13,52 @@ export default function Footer() {
       }}
     >
       <div className="content-container">
-        {/* Three Column Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {/* Brand */}
-          <div>
-            <div className="leading-none">
-              <div
-                style={{
-                  fontFamily: '"Noto Sans TC", sans-serif',
-                  fontWeight: 900,
-                  fontSize: 13,
-                  color: '#f5f5f0',
-                }}
-              >
-                666
-              </div>
-              <div
-                style={{
-                  fontFamily: '"Noto Sans TC", sans-serif',
-                  fontWeight: 900,
-                  fontSize: 18,
-                  letterSpacing: '0.02em',
-                  color: '#f5f5f0',
-                }}
-              >
-                誰是敵基督
-              </div>
+        {/* Brand — centered */}
+        <div className="flex justify-center mb-10">
+          <div className="leading-none text-center">
+            <div
+              style={{
+                fontFamily: '"Noto Sans TC", sans-serif',
+                fontWeight: 900,
+                fontSize: 24,
+                color: '#f5f5f0',
+              }}
+            >
+              666
+            </div>
+            <div
+              style={{
+                fontFamily: '"Noto Sans TC", sans-serif',
+                fontWeight: 900,
+                fontSize: 32,
+                letterSpacing: '0.02em',
+                color: '#f5f5f0',
+              }}
+            >
+              誰是敵基督
             </div>
           </div>
+        </div>
 
+        {/* Links row — matching reference image layout */}
+        <div className="flex justify-center gap-16 sm:gap-24 mb-10">
           {/* Quick Links */}
           <div>
             <p
-              className="mb-3"
+              className="mb-2"
               style={{
                 fontFamily: '"Noto Sans TC", sans-serif',
                 fontWeight: 700,
-                fontSize: 13,
-                color: '#8a8a82',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: 14,
+                color: '#f5f5f0',
               }}
             >
               快速連結
             </p>
             <a
-              href="#contact"
+              href="https://wa.me/+44184158"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-1 transition-colors hover:text-[#f5f5f0]"
               style={{
                 fontFamily: '"Noto Sans TC", sans-serif',
@@ -74,14 +74,12 @@ export default function Footer() {
           {/* Social */}
           <div>
             <p
-              className="mb-3"
+              className="mb-2"
               style={{
                 fontFamily: '"Noto Sans TC", sans-serif',
                 fontWeight: 700,
-                fontSize: 13,
-                color: '#8a8a82',
-                textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                fontSize: 14,
+                color: '#f5f5f0',
               }}
             >
               社交媒體
@@ -103,9 +101,9 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
+        {/* Bottom bar */}
         <div
-          className="flex flex-col sm:flex-row items-center justify-between gap-4"
+          className="flex items-center justify-center"
           style={{
             marginTop: 40,
             paddingTop: 20,

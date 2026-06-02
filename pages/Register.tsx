@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 import { ArrowLeft, ArrowUpRight, ChevronDown } from 'lucide-react';
 import Navbar from '../sections/Navbar';
 import Footer from '../sections/Footer';
@@ -54,18 +54,21 @@ export default function Register() {
   });
 
   const isOtherSelected = form.hearAbout.includes('other');
+  const location = useLocation();
 
-  // Scroll to submit button when navigating with #submit-btn hash
+  // Scroll to register-header hash when navigating
   useEffect(() => {
-    if (window.location.hash === '#register-header') {
+    if (location.hash === '#register-header') {
+      window.scrollTo(0, 0);
       setTimeout(() => {
         const el = document.getElementById('register-header');
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const y = el.getBoundingClientRect().top + window.scrollY - 100;
+          window.scrollTo({ top: y, behavior: 'smooth' });
         }
-      }, 300);
+      }, 100);
     }
-  }, []);
+  }, [location]);
 
   const toggleHearAbout = useCallback((key: string) => {
     setForm(prev => {

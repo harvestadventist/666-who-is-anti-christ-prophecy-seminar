@@ -116,7 +116,7 @@ export default function Register() {
         setSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        console.log(result.status);
+        console.log(result);
         setSubmitError('提交失敗，請稍後再試。');
       }
     } catch (err) {

@@ -7,7 +7,7 @@ import Footer from '../sections/Footer';
 // STEP 1: Create a Google Sheet
 // STEP 2: Deploy the Google Apps Script (Code.gs in google-apps-script folder)
 // STEP 3: Paste the Web App URL below:
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwv-l9I4RPd8UQjUZvHZJl-XEZ68WRiuWiwbEY6nBfoxBbeYozr_gnsiH3vk9skKR_MTQ/exec';
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby-z0NWqJKufU8zgtKDBHEly2ThItzRj-E1uMxBZH99NP6NRUZBqu2LRSr_3o4MbXzSKw/exec';
 
 const hearAboutOptions = [
   { key: 'flyer', label: '宣傳單張' },
@@ -113,12 +113,12 @@ export default function Register() {
       });
       const result = await response.json();
       if (result.status === 'success') {
-        console.log(result.status);
         setSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        console.log(result.status);
-        setSubmitError('提交失敗，請稍後再試。');
+        //console.log(result.status);
+        setSubmitError(result.status);
+        //setSubmitError('提交失敗，請稍後再試。');
       }
     } catch (err) {
       setSubmitError('網絡連接失敗，請稍後再試。');

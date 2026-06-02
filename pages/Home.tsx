@@ -12,6 +12,7 @@ import About from '../sections/About';
 import Topics from '../sections/Topics';
 import FreeGift from '../sections/FreeGift';
 import Locations from '../sections/Locations';
+import Speaker from '../sections/Speaker';
 import FAQ from '../sections/FAQ';
 import CTATicket from '../sections/CTATicket';
 import Footer from '../sections/Footer';
@@ -53,6 +54,7 @@ export default function Home() {
           <FreeGift />
         </div>
         <Locations />
+        <Speaker />
         <FAQ />
         <CTATicket />
       </main>

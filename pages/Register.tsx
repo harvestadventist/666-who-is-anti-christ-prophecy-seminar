@@ -112,7 +112,7 @@ export default function Register() {
         body: params,
       });
       const result = await response.json();
-      if (result.status === 'success') {
+      if (result.status === 'ok') {
         setSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {

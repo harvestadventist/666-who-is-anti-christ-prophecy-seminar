@@ -83,7 +83,7 @@ export default function FreeGift() {
 
         {/* CTA */}
         <Link
-          to="/register"
+          to="/register#register-header"
           className="inline-flex items-center gap-2 rounded-full font-bold whitespace-nowrap transition-all hover:brightness-110 shrink-0"
           style={{
             background: '#0a0a0a',

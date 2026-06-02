@@ -34,7 +34,7 @@ const locations: LocationBlock[] = [
     showCity: false,
     city: '',
     showDate: true,
-    date: '8月9日 (第一場)',
+    date: '8月9日 (第一場) - 誰是基督?',
     showAddress: false,
     address: '',
     showTime: true,
@@ -45,7 +45,7 @@ const locations: LocationBlock[] = [
     showCity: false,
     city: '',
     showDate: true,
-    date: '8月9日 (第二場)',
+    date: '8月9日 (第二場) - 誰是敵基督?',
     showAddress: false,
     address: '',
     showTime: true,
@@ -56,7 +56,7 @@ const locations: LocationBlock[] = [
     showCity: false,
     city: '',
     showDate: true,
-    date: '8月10日 (第三場)',
+    date: '8月10日 (第三場) - 聖經的666是什麼?',
     showAddress: false,
     address: '',
     showTime: true,
@@ -67,7 +67,7 @@ const locations: LocationBlock[] = [
     showCity: false,
     city: '',
     showDate: true,
-    date: '8月11日 (第四場)',
+    date: '8月11日 (第四場) - 誰是144,000人?',
     showAddress: false,
     address: '',
     showTime: true,
@@ -78,7 +78,7 @@ const locations: LocationBlock[] = [
     showCity: false,
     city: '',
     showDate: true,
-    date: '8月12日 (第五場)',
+    date: '8月12日 (第五場) - 善惡之爭誰會得勝?',
     showAddress: false,
     address: '',
     showTime: true,
@@ -277,7 +277,7 @@ export default function Locations() {
                 {loc.showButton && (
                   <div className="flex items-center gap-4 mt-3">
                     <Link
-                      to="/register"
+                      to="/register#register-header"
                       className="inline-flex items-center gap-1 rounded-full font-bold"
                       style={{
                         background: '#f59e0b',

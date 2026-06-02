@@ -110,18 +110,28 @@ export default function About() {
           </p>
 
           <Link
-            to="/register"
-            className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110 mt-8"
+            to="/register#register-header"
+            className="inline-flex items-center gap-3 rounded-full font-bold transition-all hover:brightness-110 mt-8"
             style={{
               background: '#f59e0b',
               color: '#0a0a0a',
-              padding: '12px 28px',
-              fontSize: 14,
+              padding: '14px 14px 14px 28px',
+              fontSize: 15,
               fontFamily: '"Noto Sans TC", sans-serif',
+              letterSpacing: '0.02em',
             }}
           >
             預留您的座位
-            <ArrowUpRight size={14} />
+            <span
+              className="flex items-center justify-center rounded-full"
+              style={{
+                width: 36,
+                height: 36,
+                background: '#1a1a1a',
+              }}
+            >
+              <ArrowUpRight size={16} color="#f59e0b" />
+            </span>
           </Link>
         </div>
       </div>

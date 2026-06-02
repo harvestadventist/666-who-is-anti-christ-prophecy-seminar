@@ -97,7 +97,7 @@ export default function CTATicket() {
             <div
               className="flex-1 flex flex-col items-start justify-center p-6 lg:p-8"
               style={{
-                background: '#f59e0b',
+                background: 'linear-gradient(90deg, #f59e0b, #fbbf24)',
                 minWidth: 220,
               }}
             >
@@ -113,7 +113,7 @@ export default function CTATicket() {
                 立即報名！
               </p>
               <Link
-                to="/register"
+                to="/register#register-header"
                 className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110 mt-5"
                 style={{
                   background: '#0a0a0a',
@@ -165,7 +165,7 @@ export default function CTATicket() {
             {/* 3. Orange panel: 立即報名！ */}
             <div
               className="flex flex-col items-center text-center py-8 px-6"
-              style={{ background: '#f59e0b' }}
+              style={{ background: 'linear-gradient(90deg, #f59e0b, #fbbf24)' }}
             >
               <p
                 style={{
@@ -179,7 +179,7 @@ export default function CTATicket() {
                 立即報名！
               </p>
               <Link
-                to="/register"
+                to="/register#register-header"
                 className="w-full flex items-center justify-center gap-3 rounded-full font-bold transition-all hover:brightness-95 mt-6"
                 style={{
                   background: '#ffffff',

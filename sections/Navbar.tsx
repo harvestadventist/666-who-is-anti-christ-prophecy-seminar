@@ -79,7 +79,7 @@ export default function Navbar() {
         {/* Right CTA + Mobile Menu */}
         <div className="flex items-center gap-3">
           <Link
-            to="/register"
+            to="/register#register-header"
             className="hidden sm:inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110"
             style={{
               background: '#f59e0b',
@@ -125,7 +125,7 @@ export default function Navbar() {
           }}
         >
           <Link
-            to="/register"
+            to="/register#register-header"
             className="inline-flex items-center justify-center gap-2 rounded-full font-bold"
             style={{
               background: '#f59e0b',

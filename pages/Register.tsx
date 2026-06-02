@@ -112,10 +112,12 @@ export default function Register() {
         body: params,
       });
       const result = await response.json();
-      if (result.status === 'ok') {
+      if (result.status === 'success') {
+        console.log(result.status);
         setSubmitted(true);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
+        console.log(result.status);
         setSubmitError('提交失敗，請稍後再試。');
       }
     } catch (err) {

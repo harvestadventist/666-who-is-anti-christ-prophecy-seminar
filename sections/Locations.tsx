@@ -308,7 +308,7 @@ export default function Locations() {
           >
             <iframe
               title="聚會地點地圖"
-              src="https://maps.google.com/maps?q=%E6%97%BA%E8%A7%92%E5%BD%8C%E6%95%A6%E9%81%93612%E8%87%B3618%E8%99%9F%E5%A5%BD%E6%9C%9B%E8%A7%92%E5%A4%A7%E5%BB%88&t=m&z=17&ie=UTF8&iwloc=B&output=embed"
+              src="https://maps.google.com/maps?saddr=22.3184122,114.1697672&daddr=22.3175294,114.1700227&output=embed"
               className="w-full flex-1"
               style={{
                 minHeight: 300,
@@ -319,7 +319,7 @@ export default function Locations() {
               referrerPolicy="no-referrer-when-downgrade"
             />
             <a
-              href="https://www.google.com/maps/dir/?api=1&origin=%E7%B5%95%E5%91%B3%20Juewei%20HK%20%E4%B9%9D%E9%BE%8D%20%E6%97%BA%E8%A7%92%20%E6%97%BA%E8%A7%92%E6%B8%AF%E9%90%B5%E6%97%BA%E8%A7%92%E7%AB%99MOK25%E8%99%96&destination=%E6%97%BA%E8%A7%92%E5%BD%8C%E6%95%A6%E9%81%93612%E8%87%B3618%E8%99%9F%E5%A5%BD%E6%9C%9B%E8%A7%92%E5%A4%A7%E5%BB%88&travelmode=walking"
+              href="https://www.google.com/maps/dir/22.3184122,114.1697672/22.3175294,114.1700227"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 py-3 transition-colors hover:bg-white/5 shrink-0"

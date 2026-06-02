@@ -1,7 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { Link } from 'react-router';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ChevronDown, MapPin } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,20 +64,33 @@ export default function Hero() {
           >
             免費聖經預言講座！
           </h1>
-          <a
-            href="#locations"
+          <Link
+            to="/register#register-header"
             className="inline-flex items-center gap-2 rounded-full font-bold transition-all hover:brightness-110 mt-8"
             style={{
               background: '#f59e0b',
               color: '#0a0a0a',
-              padding: '14px 32px',
+              padding: '12px 12px 12px 28px',
               fontSize: 15,
               fontFamily: '"Noto Sans TC", sans-serif',
             }}
           >
-            <MapPin size={16} />
-            聚會地點
-          </a>
+            立即報名
+            <span
+              className="flex items-center justify-center rounded-full"
+              style={{
+                width: 32,
+                height: 32,
+                background: '#0a0a0a',
+                marginLeft: 4,
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f5f5f0" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M7 17L17 7" />
+                <path d="M7 7h10v10" />
+              </svg>
+            </span>
+          </Link>
         </div>
         <div
           ref={chevronRef}
@@ -107,7 +121,7 @@ export default function Hero() {
                 lineHeight: 1.3,
               }}
             >
-              免費聖經預言講座舉辦地點
+              8月9日正式開始
             </p>
             <p
               style={{
@@ -118,7 +132,7 @@ export default function Hero() {
                 marginTop: 2,
               }}
             >
-              歡迎親臨現場！
+              免費聖經預言講座!
             </p>
           </div>
 

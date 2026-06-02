@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Search } from 'lucide-react';
+import { MapPin, Search } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -46,55 +46,88 @@ export default function SearchBar() {
       }}
     >
       <div className="content-container flex flex-col sm:flex-row items-center justify-between gap-4">
-        {/* Text - centered on mobile, left on desktop */}
-        <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-          <p
-            className="sm:text-[18px]"
+        {/* Desktop: bold text + pin icon + address */}
+        <div className="hidden sm:flex items-center gap-4">
+          <span
+            style={{
+              fontFamily: '"Noto Sans TC", "Arial Black", sans-serif',
+              fontWeight: 900,
+              fontSize: 20,
+              color: '#0a0a0a',
+              letterSpacing: '0.02em',
+              lineHeight: 1.2,
+            }}
+          >
+            8月9日正式開始
+          </span>
+          <span
+            className="flex items-center justify-center rounded-full"
+            style={{
+              width: 36,
+              height: 36,
+              background: 'rgba(10,10,10,0.15)',
+            }}
+          >
+            <MapPin size={18} color="#0a0a0a" />
+          </span>
+          <span
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
-              fontWeight: 700,
-              fontSize: 20,
+              fontSize: 16,
+              fontWeight: 600,
               color: '#0a0a0a',
               lineHeight: 1.3,
             }}
           >
-            免費聖經預言講座舉辦地點
-          </p>
+            旺角好望角大廈9樓百本人才培訓學院
+          </span>
+        </div>
+
+        {/* Mobile text */}
+        <div className="flex flex-col items-center sm:hidden text-center">
           <p
-            className="sm:text-[14px]"
             style={{
               fontFamily: '"Noto Sans TC", sans-serif',
-              fontSize: 16,
-              color: 'rgba(10,10,10,0.7)',
-              lineHeight: 1.4,
+              fontWeight: 700,
+              fontSize: 24,
+              color: '#0a0a0a',
+              lineHeight: 1.3,
             }}
           >
-            歡迎親臨現場！
+            8月9日正式開始
+          </p>
+          <p
+            style={{
+              fontFamily: '"Noto Sans TC", sans-serif',
+              fontSize: 17,
+              color: 'rgba(10,10,10,0.7)',
+              lineHeight: 1.4,
+              marginTop: 2,
+            }}
+          >
+            免費聖經預言講座!
           </p>
         </div>
 
-        {/* Button - full width on mobile with 30px margins */}
+        {/* Button - white pill with amber circle icon */}
         <a
           href="#locations"
-          className="inline-flex items-center justify-center gap-2 rounded-full font-bold whitespace-nowrap transition-all hover:brightness-110 w-full sm:w-auto"
+          className="inline-flex items-center gap-3 rounded-full font-bold whitespace-nowrap transition-all hover:brightness-110"
           style={{
             background: '#ffffff',
             color: '#0a0a0a',
-            padding: '14px 10px 14px 24px',
+            padding: '12px 12px 12px 28px',
             fontSize: 15,
             fontFamily: '"Noto Sans TC", sans-serif',
-            marginLeft: 30,
-            marginRight: 30,
           }}
         >
           搜尋聚會地點
           <span
-            className="flex items-center justify-center rounded-full shrink-0"
+            className="flex items-center justify-center rounded-full"
             style={{
               width: 36,
               height: 36,
               background: '#f59e0b',
-              marginLeft: 4,
             }}
           >
             <Search size={18} color="#0a0a0a" />

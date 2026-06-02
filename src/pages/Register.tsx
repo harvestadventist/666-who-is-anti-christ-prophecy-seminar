@@ -199,7 +199,7 @@ export default function Register() {
                 lineHeight: 1.7,
               }}
             >
-              感謝您的報名，{form.firstName}！我們已收到您的座位預留申請，並為您準備了免費禮物。請留意您的電子郵件收件匣，我們將發送確認信給您。
+              感謝您的報名，{form.firstName}！我們已收到您的座位預留申請，並為您準備了免費禮物。請留意您的WhatsApp，我們將發送確認信給您。
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center mt-8">
               <button

@@ -85,7 +85,7 @@ export default function Footer() {
               社交媒體
             </p>
             <a
-              href="https://www.facebook.com/harvestadventistcentre/"
+              href="https://www.meetup.com/liveitup-people/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-1 transition-colors hover:text-[#f5f5f0]"
@@ -95,7 +95,7 @@ export default function Footer() {
                 color: '#8a8a82',
               }}
             >
-              Facebook
+              Meetup
               <ArrowUpRight size={12} />
             </a>
           </div>
